@@ -1,0 +1,21 @@
+Django==1.8.4
+django-crispy-forms==1.4.0
+python-dateutil==2.2
+psycopg2==2.6
+dj-database-url==0.3.0
+dj-static==0.0.6
+django-storages-redux==1.2.3
+ievv-opensource==0.2.25
+django-cradmin==1.0.1b68
+python-docx==0.8.5
+
+# For Django-rest-framework
+# djangorestframework==3.3.2
+# Markdown==2.6.5
+# django-filter==0.12.0
+# django-rest-swagger==0.3.4
+
+# lockdown the whole site with a password while it is in staging
+django-lockdown==1.1
+
+-e .

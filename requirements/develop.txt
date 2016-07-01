@@ -1,0 +1,42 @@
+#
+#
+# Dependencies for development.
+#
+#
+-r common.txt
+
+# Required by sphinx
+Sphinx==1.3.1
+sphinx-rtd-theme==0.1.7
+sphinxcontrib-napoleon==0.3.3
+appresso_sphinx_extensions==1.0.0
+
+# Easier to work with databases during development
+#django_dbdev==0.9.4
+sh==1.11
+
+# Better Django shell and other utils for development
+ipython==3.1.0
+
+# For building CSS docs
+vitalstyles==1.1.4
+
+# For testing HTML output in tests
+htmls==0.9.6
+
+# For test/CI automation
+flake8==2.4.0
+tox==1.9.2
+coverage==3.7.1
+
+# Django toolbar
+django-debug-toolbar==1.3.0
+
+# For database fixture generation
+model-mommy==1.2.4
+
+# For translations
+transifex-client==0.11
+
+# Pull inn development packages from GIT
+-r develop.gitpackages.txt
