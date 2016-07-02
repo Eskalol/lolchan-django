@@ -6,7 +6,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=30, unique=True, blank=False)
     description = models.TextField(blank=True, default='')
 
-    def __unicode__(self):
+    def __str__(self):
         return '{} - {}'.format(self.id, self.name)
 
     @property
@@ -28,7 +28,7 @@ class Post(models.Model):
     class Meta:
         unique_together = ('channel', 'title')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     @property
@@ -49,7 +49,7 @@ class Comment(models.Model):
     text = models.TextField(blank=False)
     publish_date = models.DateTimeField(default=timezone.now, null=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.post.title + ' -comment'
 
     @property

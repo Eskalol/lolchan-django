@@ -14,7 +14,6 @@ from lolchan.project.default.projectspecific_settings import *  # noqa
 
 REPOROOT_DIR = dirname(dirname(dirname(dirname(__file__))))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -45,6 +44,7 @@ INSTALLED_APPS = (
     'ievv_opensource.ievvtasks_common',
     'lolchan.lolchan_core.apps.LolChanCoreConfig',
     'lolchan.lolchan_lobby',
+    'lolchan.lolchan_channel',
     'django_cradmin',
 )
 
@@ -99,6 +99,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            join(REPOROOT_DIR,  'templates'),
             # insert your TEMPLATE_DIRS here
         ],
         'APP_DIRS': True,

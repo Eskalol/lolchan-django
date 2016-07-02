@@ -27,7 +27,7 @@ class BaseCrinstance(crinstance.BaseCrAdminInstance):
 
     @classmethod
     def matches_urlpath(cls, urlpath):
-        return urlpath.startswith('/lobby/')
+        return urlpath.startswith('/lobby')
 
     def get_titletext_for_role(self, role):
         return str(role)

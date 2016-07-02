@@ -1,0 +1,5 @@
+{% extends 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html' %}
+{% block content %}
+    <h2>{{ me.post.title }}</h2>
+    {{ me.post.text }}
+{% endblock %}
