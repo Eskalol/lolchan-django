@@ -14,5 +14,6 @@ default_urls = [
         {'next_page': '/'},
         name='lolchan-logout'),
     url('^cradmin/', include(superuserui_registry.default.make_cradmin_instance_class().urls())),
+    url('^lobby/', include('lolchan.lolchan_lobby.urls')),
     #url(r'^admin/', include(CrAdminInstance.urls())),
 ]
