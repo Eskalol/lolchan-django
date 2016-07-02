@@ -15,3 +15,8 @@ from django.contrib import admin
 
 #admin.site.register(User, UserAdmin)
 
+from .models import *
+# Register your models here.
+admin.site.register(Channel)
+admin.site.register(Post)
+admin.site.register(Comment)

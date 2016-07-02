@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_email',
     'ievv_opensource.ievvtasks_common',
-    'lolchan.lolchan_core',
+    'lolchan.lolchan_core.apps.LolChanCoreConfig',
     'django_cradmin',
 )
 
