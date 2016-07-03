@@ -21,7 +21,7 @@ class ChannelView(listbuilderview.View):
     value_renderer_class = PostItemValue
 
     def get_pagetitle(self):
-        return 'this is a channel'
+        return self.request.cradmin_role.name
 
     def get_queryset_for_role(self, role):
         print(Post.objects.filter(channel=role).all())

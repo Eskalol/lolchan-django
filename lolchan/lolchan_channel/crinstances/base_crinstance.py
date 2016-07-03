@@ -33,4 +33,4 @@ class BaseCrinstance(crinstance.BaseCrAdminInstance):
         return urlpath.startswith('/channel')
 
     def get_titletext_for_role(self, role):
-        return str(role)
+        return str(role.name)

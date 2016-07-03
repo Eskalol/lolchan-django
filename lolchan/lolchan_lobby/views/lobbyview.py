@@ -1,12 +1,18 @@
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
 from django_cradmin.viewhelpers import listbuilderview
+from django_cradmin.crinstance import reverse_cradmin_url
 from lolchan.lolchan_core.models import Channel
 
 
 class ChannelItemFrame(listbuilder.itemframe.Link):
+    valuealias = 'channel'
+
     def get_url(self):
-        return '#'
+        return reverse_cradmin_url(instanceid='channel',
+                                   appname='channel',
+                                   roleid=self.channel.id,
+                                   viewname=crapp.INDEXVIEW_NAME)
 
 
 class ChannelItemValue(listbuilder.itemvalue.TitleDescription):

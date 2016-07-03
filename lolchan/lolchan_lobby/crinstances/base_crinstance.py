@@ -2,7 +2,7 @@ from django_cradmin import crinstance
 from django_cradmin import crmenu
 from django_cradmin.decorators import has_access_to_cradmin_instance
 
-from lolchan.lolchan_lobby.views import lobby_view
+from lolchan.lolchan_lobby.views import lobbyview
 
 
 class Menu(crmenu.Menu):
@@ -19,7 +19,7 @@ class BaseCrinstance(crinstance.BaseCrAdminInstance):
     flatten_rolefrontpage_url = True
     id = 'lobby'
     apps = [
-        ('lobby', lobby_view.App),
+        ('lobby', lobbyview.App),
     ]
 
     def has_access(self):

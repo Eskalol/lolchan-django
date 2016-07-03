@@ -4,11 +4,11 @@ from django.utils import timezone
 from django_cradmin import cradmin_testhelpers
 from model_mommy import mommy
 
-from lolchan.lolchan_lobby.views import lobby_view
+from lolchan.lolchan_lobby.views import lobbyview
 
 
 class TestLobbyview(TestCase, cradmin_testhelpers.TestCaseMixin):
-    viewclass = lobby_view.LobbyView
+    viewclass = lobbyview.LobbyView
 
     def test_channel_name(self):
         mommy.make('lolchan_core.Channel', name='Cats')
