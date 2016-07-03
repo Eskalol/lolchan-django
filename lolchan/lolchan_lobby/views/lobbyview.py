@@ -38,7 +38,7 @@ class LobbyView(listbuilderview.View):
     frame_renderer_class = ChannelItemFrame
 
     def get_pagetitle(self):
-        return 'this is the lobby'
+        return 'Lobby'
 
     def get_queryset_for_role(self, role):
         return Channel.objects.all()

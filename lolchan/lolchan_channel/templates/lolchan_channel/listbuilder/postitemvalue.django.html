@@ -1,5 +1,18 @@
 {% extends 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load cradmin_tags %}
+
 {% block content %}
-    <h2>{{ me.post.title }}</h2>
-    {{ me.post.text }}
+    <div class="lolchan-channel-post">
+        <h2 class="lolchan-channel-post-title">{{ me.post.title }}</h2>
+
+        <p class="lolchan-channel-post-description">{{ me.post.text }}</p>
+
+        <p>
+        <div class="row">
+            <div class="col-md-6 lolchan-channel-post-votes">{{ me.post.votes }}</div>
+            <div class="col-md-6 text-right">{{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
+        </div>
+    </div>
 {% endblock %}
