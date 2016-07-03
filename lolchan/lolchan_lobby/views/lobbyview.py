@@ -55,7 +55,6 @@ class LobbyView(listbuilderview.FilterListMixin, listbuilderview.View):
     def get_pagetitle(self):
         return 'Lobby'
 
-
     def add_filterlist_items(self, filterlist):
         filterlist.append(listfilter.django.single.textinput.Search(
             slug='Search',
