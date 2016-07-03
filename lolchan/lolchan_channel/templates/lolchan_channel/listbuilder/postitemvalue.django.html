@@ -11,7 +11,11 @@
 
         <p>
         <div class="row">
-            <div class="col-md-6 lolchan-channel-post-votes">{{ me.post.votes }}</div>
+            <div class="col-md-6 lolchan-channel-post-votes">
+                {{ me.post.votes }}
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                <button class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+            </div>
             <div class="col-md-6 text-right">{{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
         </div>
     </div>

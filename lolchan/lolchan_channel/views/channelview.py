@@ -2,6 +2,7 @@ from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
 from django_cradmin.viewhelpers import listbuilderview
 from lolchan.lolchan_core.models import Channel, Post
+
 from crispy_forms import layout
 
 
