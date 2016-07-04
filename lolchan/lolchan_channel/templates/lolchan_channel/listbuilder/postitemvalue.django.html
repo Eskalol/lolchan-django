@@ -5,7 +5,6 @@
 {% load cradmin_tags %}
 
 {% block content %}
-    <blockquote>
         <div class="lolchan-channel-post panel panel-default">
             <div class="lolchan-channel-post-title panel-heading"><strong>{{ me.post.title }}</strong> - {{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
 
@@ -21,15 +20,19 @@
             </div>
 
             {% if comment_list %}
-                <div class="col-lg-12 lolchab-channel-post-comments panel panel-default">
-                    <div class="panel-heading">Comments</div>
-                    <div class="panel-body">
-                        {% cradmin_render_renderable comment_list %}
+                <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="lolchab-channel-post-comments panel panel-default">
+                        <div class="panel-heading">Comments</div>
+                        <div class="panel-body">
+                            {% cradmin_render_renderable comment_list %}
+                        </div>
                     </div>
+                </div>
+
                 </div>
             {% else %}
             {% endif %}
 
         </div>
-    </blockquote>
 {% endblock %}
