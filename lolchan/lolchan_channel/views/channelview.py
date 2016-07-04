@@ -2,12 +2,25 @@ from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
 from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import create
-from lolchan.lolchan_core.models import Channel, Post
+from lolchan.lolchan_core.models import Channel, Post, Comment
 from django import forms
 from crispy_forms import layout
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import DefaultSubmit
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
+
+
+class CommentItemValue(listbuilder.itemvalue.base.ItemValueRenderer):
+    valuealias = 'comment'
+    template_name = 'lolchan_channel/listbuilder/commentitemvalue.django.html'
+
+    def __init__(self, value):
+        super(CommentItemValue, self).__init__(value)
+        self.comment.publish_date = self.__get_publish_time_ago()
+
+    def __get_publish_time_ago(self):
+        return timezone.now() - self.comment.publish_date
 
 
 class PostItemFrame(listbuilder.itemframe.DefaultSpacingItemFrame):
@@ -25,17 +38,15 @@ class PostItemValue(listbuilder.itemvalue.FocusBox):
         css_classes_list = super(PostItemValue, self).get_extra_css_classes_list()
         return css_classes_list
 
+    def __get_comment_queryset(self):
+        return Comment.objects.filter(post=self.post).order_by('-publish_date', )[:3]
 
-# class ChannelsView(listbuilderview.View):
-#     model = Post
-#     value_renderer_class = PostItemValue
-#     frame_renderer_class = PostItemFrame
-#
-#     def get_pagetitle(self):
-#         return self.request.cradmin_role.name
-#
-#     def get_queryset_for_role(self, role):
-#         return Post.objects.filter(channel=role).all()
+    def get_context_data(self, request=None):
+        context = super(PostItemValue, self).get_context_data(request)
+        context['comment_list'] = listbuilder.base.List.from_value_iterable(
+            value_iterable=self.__get_comment_queryset(),
+            value_renderer_class=CommentItemValue)
+        return context
 
 
 class PostListBuilder(listbuilder.base.List):
@@ -130,7 +141,7 @@ class ChannelView(create.CreateView):
         context = super(ChannelView, self).get_context_data(**kwargs)
         post_list = PostListBuilder(self.request.cradmin_role)
         post_list.build()
-        context['listbuilder_list'] = post_list
+        context['post_list'] = post_list
         return context
 
 

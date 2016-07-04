@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 {% load cradmin_tags %}
+{% load cradmin_tags %}
 
 {% block content %}
     <div class="lolchan-channel-post">
@@ -17,6 +18,13 @@
                 <button class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></button>
             </div>
             <div class="col-md-6 text-right">{{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
+
+        </div>
+
+        <div class="col-lg-12 lolchab-channel-post-comments">
+            <h3>Comments: </h3>
+
+            {% cradmin_render_renderable comment_list %}
         </div>
     </div>
 {% endblock %}
