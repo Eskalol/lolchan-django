@@ -10,10 +10,10 @@ django-cradmin==1.0.1b68
 python-docx==0.8.5
 
 # For Django-rest-framework
-# djangorestframework==3.3.2
+djangorestframework==3.3.2
 # Markdown==2.6.5
 # django-filter==0.12.0
-# django-rest-swagger==0.3.4
+django-rest-swagger==0.3.4
 
 # lockdown the whole site with a password while it is in staging
 django-lockdown==1.1

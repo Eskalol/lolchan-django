@@ -35,17 +35,18 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    # 'rest_framework_swagger',
-    # 'rest_framework',
+    'rest_framework_swagger',
+    'rest_framework',
     'crispy_forms',
     'django_cradmin.apps.cradmin_generic_token_with_metadata',
     'django_cradmin.apps.cradmin_authenticate',
     'django_cradmin.apps.cradmin_email',
     'ievv_opensource.ievvtasks_common',
+    'django_cradmin',
     'lolchan.lolchan_core.apps.LolChanCoreConfig',
     'lolchan.lolchan_lobby',
     'lolchan.lolchan_channel',
-    'django_cradmin',
+    'lolchan.lolchan_api',
 )
 
 MIDDLEWARE_CLASSES = [

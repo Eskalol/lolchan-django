@@ -16,5 +16,6 @@ default_urls = [
     url('^superuser/', include(superuserui_registry.default.make_cradmin_instance_class().urls())),
     url('^lobby/', include('lolchan.lolchan_lobby.urls')),
     url('^channel/', include('lolchan.lolchan_channel.urls')),
+    url('^api/', include('lolchan.lolchan_api.urls')),
     #url(r'^admin/', include(CrAdminInstance.urls())),
 ]

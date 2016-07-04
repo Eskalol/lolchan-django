@@ -11,14 +11,14 @@ class TestLobbyview(TestCase, cradmin_testhelpers.TestCaseMixin):
     viewclass = lobbyview.LobbyView
 
     def test_channel_name(self):
-        mommy.make('lolchan_core.Channel', name='Cats')
+        mommy.make('lolchan_core.channel', name='Cats')
         mockresponse = self.mock_http200_getrequest_htmls()
         self.assertEqual('Cats', mockresponse.selector.one(
             '.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
 
     def test_multiple_channel_names(self):
-        mommy.make('lolchan_core.Channel', name='Cats')
-        mommy.make('lolchan_core.Channel', name='Doge')
+        mommy.make('lolchan_core.channel', name='Cats')
+        mommy.make('lolchan_core.channel', name='Doge')
         mockresponse = self.mock_http200_getrequest_htmls()
         channel_names = mockresponse.selector.list(
             '.django-cradmin-listbuilder-itemvalue-titledescription-title')
@@ -27,36 +27,36 @@ class TestLobbyview(TestCase, cradmin_testhelpers.TestCaseMixin):
         self.assertIn('Doge', channel_names)
 
     def test_channel_count(self):
-        mommy.make('lolchan_core.Channel')
-        mommy.make('lolchan_core.Channel')
-        mommy.make('lolchan_core.Channel')
+        mommy.make('lolchan_core.channel')
+        mommy.make('lolchan_core.channel')
+        mommy.make('lolchan_core.channel')
         mockresponse = self.mock_http200_getrequest_htmls()
         channels = mockresponse.selector.list(
             '.django-cradmin-listbuilder-itemvalue-titledescription-title')
         self.assertEqual(3, len(channels))
 
     def test_filter_name_order_descending(self):
-        mommy.make('lolchan_core.Channel', name='Cats')
-        mommy.make('lolchan_core.Channel', name='Doge')
+        mommy.make('lolchan_core.channel', name='Cats')
+        mommy.make('lolchan_core.channel', name='Doge')
         mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'filters_string': 'orderby-name_descending'})
         result_list = mockresponse.selector.list('.django-cradmin-listbuilder-itemvalue-titledescription-title')
         self.assertEqual('Doge', result_list[0].alltext_normalized)
         self.assertEqual('Cats', result_list[1].alltext_normalized)
 
     def test_filter_search(self):
-        mommy.make('lolchan_core.Channel', name='Doge')
-        mommy.make('lolchan_core.Channel', name='Cats')
-        mommy.make('lolchan_core.Channel', name='Imba')
+        mommy.make('lolchan_core.channel', name='Doge')
+        mommy.make('lolchan_core.channel', name='Cats')
+        mommy.make('lolchan_core.channel', name='Imba')
         mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'filters_string': 'Search-c'})
         self.assertEqual('Cats', mockresponse.selector.one(
             '.django-cradmin-listbuilder-itemvalue-titledescription-title').alltext_normalized)
 
     def test_filter_order_and_search(self):
-        mommy.make('lolchan_core.Channel', name='Doge')
-        mommy.make('lolchan_core.Channel', name='Cats')
-        mommy.make('lolchan_core.Channel', name='Imba')
-        mommy.make('lolchan_core.Channel', name='Cool')
-        mommy.make('lolchan_core.Channel', name='Cola')
+        mommy.make('lolchan_core.channel', name='Doge')
+        mommy.make('lolchan_core.channel', name='Cats')
+        mommy.make('lolchan_core.channel', name='Imba')
+        mommy.make('lolchan_core.channel', name='Cool')
+        mommy.make('lolchan_core.channel', name='Cola')
         mockresponse = self.mock_http200_getrequest_htmls(viewkwargs={'filters_string': 'Search-c/orderby-name_descending'})
         result_list = mockresponse.selector.list('.django-cradmin-listbuilder-itemvalue-titledescription-title')
         self.assertEqual('Cool', result_list[0].alltext_normalized)

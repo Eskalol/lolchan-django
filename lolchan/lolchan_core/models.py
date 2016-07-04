@@ -5,6 +5,7 @@ from django.db import models
 class Channel(models.Model):
     name = models.CharField(max_length=30, unique=True, blank=False)
     description = models.TextField(blank=True, default='')
+    slug = models.SlugField(max_length=255, unique=True)
 
     def __str__(self):
         return '{} - {}'.format(self.id, self.name)
@@ -16,6 +17,10 @@ class Channel(models.Model):
     @property
     def get_description(self):
         return self.description
+
+    @property
+    def get_slug(self):
+        return self.slug
 
 
 class Post(models.Model):
