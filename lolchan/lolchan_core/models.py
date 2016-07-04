@@ -22,7 +22,7 @@ class Post(models.Model):
     channel = models.ForeignKey(Channel, null=False)
     title = models.CharField(max_length=30)
     text = models.TextField(blank=False)
-    votes = models.IntegerField(null=False)
+    votes = models.IntegerField(null=False, default=0)
     publish_date = models.DateTimeField(default=timezone.now, null=False)
 
     class Meta:
