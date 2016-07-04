@@ -1,14 +1,13 @@
 {% extends 'django_cradmin/viewhelpers/listbuilder/base/itemvalue.django.html' %}
 {% load i18n %}
+{% load humanize %}
 
 {% block content %}
     <div class="lolchan-channel-post-comment">
+        <blockquote>
+            <p class="lolchan-channel-post-description">{{ me.comment.text }}</p>
+            <footer>{{ me.comment.publish_date|naturaltime }}</footer>
 
-        <div class="row">
-            <div class="col-md-8 text-center">
-                <p class="lolchan-channel-post-description">{{ me.comment.text }}</p>
-            </div>
-            <div class="col-md-4 text-right">{{ me.comment.publish_date|date:'H:i' }} ago</div>
-        </div>
+        </blockquote>
     </div>
 {% endblock %}

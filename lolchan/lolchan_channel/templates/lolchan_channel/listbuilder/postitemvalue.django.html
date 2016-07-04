@@ -5,26 +5,31 @@
 {% load cradmin_tags %}
 
 {% block content %}
-    <div class="lolchan-channel-post">
-        <h2 class="lolchan-channel-post-title">{{ me.post.title }}</h2>
+    <blockquote>
+        <div class="lolchan-channel-post panel panel-default">
+            <div class="lolchan-channel-post-title panel-heading"><strong>{{ me.post.title }}</strong> - {{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
 
-        <p class="lolchan-channel-post-description">{{ me.post.text }}</p>
-
-        <p>
-        <div class="row">
-            <div class="col-md-6 lolchan-channel-post-votes">
-                {{ me.post.votes }}
-                <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-                <button class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+            <div class="lolchan-channel-post-description panel-body">
+                {{ me.post.text }}
+                <div class="row">
+                    <div class="col-md-6 lolchan-channel-post-votes">
+                        {{ me.post.votes }}
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                        <button class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></button>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 text-right">{{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
+
+            {% if comment_list %}
+                <div class="col-lg-12 lolchab-channel-post-comments panel panel-default">
+                    <div class="panel-heading">Comments</div>
+                    <div class="panel-body">
+                        {% cradmin_render_renderable comment_list %}
+                    </div>
+                </div>
+            {% else %}
+            {% endif %}
 
         </div>
-
-        <div class="col-lg-12 lolchab-channel-post-comments">
-            <h3>Comments: </h3>
-
-            {% cradmin_render_renderable comment_list %}
-        </div>
-    </div>
+    </blockquote>
 {% endblock %}

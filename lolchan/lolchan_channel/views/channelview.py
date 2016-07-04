@@ -17,10 +17,12 @@ class CommentItemValue(listbuilder.itemvalue.base.ItemValueRenderer):
 
     def __init__(self, value):
         super(CommentItemValue, self).__init__(value)
-        self.comment.publish_date = self.__get_publish_time_ago()
 
-    def __get_publish_time_ago(self):
-        return timezone.now() - self.comment.publish_date
+    def get_extra_css_classes_list(self):
+        css_classes_list = super(CommentItemValue, self).get_extra_css_classes_list()
+        css_classes_list.append('panel')
+        css_classes_list.append('panel-default')
+        return css_classes_list
 
 
 class PostItemFrame(listbuilder.itemframe.DefaultSpacingItemFrame):
@@ -36,6 +38,8 @@ class PostItemValue(listbuilder.itemvalue.FocusBox):
 
     def get_extra_css_classes_list(self):
         css_classes_list = super(PostItemValue, self).get_extra_css_classes_list()
+        # css_classes_list.append('panel')
+        # css_classes_list.append('panel-default')
         return css_classes_list
 
     def __get_comment_queryset(self):
@@ -81,7 +85,7 @@ class PostForm(forms.ModelForm):
 
 class ChannelView(create.CreateView):
     model = Post
-    submit_use_label = 'Post'
+    #submit_use_label = 'Post'
     template_name = 'lolchan_channel/channel.django.html'
 
     def get_pagetitle(self):
@@ -137,11 +141,17 @@ class ChannelView(create.CreateView):
     def set_automatic_attributes(self, obj):
         obj.channel = self.request.cradmin_role
 
+    def __get_post_queryset(self):
+        return Post.objects.all().filter(channel=self.request.cradmin_role)
+
     def get_context_data(self, **kwargs):
         context = super(ChannelView, self).get_context_data(**kwargs)
-        post_list = PostListBuilder(self.request.cradmin_role)
-        post_list.build()
-        context['post_list'] = post_list
+        #post_list = PostListBuilder(self.request.cradmin_role)
+        #post_list.build()
+        context['post_list'] = listbuilder.base.List.from_value_iterable(
+            value_iterable=self.__get_post_queryset(),
+            frame_renderer_class=PostItemFrame,
+            value_renderer_class=PostItemValue)
         return context
 
 

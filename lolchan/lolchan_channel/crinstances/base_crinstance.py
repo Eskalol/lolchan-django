@@ -7,7 +7,10 @@ from lolchan.lolchan_core.models import Channel, Post
 
 class Menu(crmenu.Menu):
     def build_menu(self):
-        self.add_headeritem(label='channel',
+        self.add_headeritem(label='lobby',
+                            url=crinstance.reverse_cradmin_url(appname='lobby',
+                                                               instanceid='lobby'))
+        self.add_headeritem(label=self.cradmin_instance.get_menu_label(),
                             url=self.appindex_url('channel'),
                             active=self.request.cradmin_app.appname == 'channel')
 
@@ -34,3 +37,6 @@ class BaseCrinstance(crinstance.BaseCrAdminInstance):
 
     def get_titletext_for_role(self, role):
         return str(role.name)
+
+    def get_menu_label(self):
+        return self.get_titletext_for_role(self.request.cradmin_role)
