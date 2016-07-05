@@ -1,29 +1,40 @@
 from rest_framework.test import APIRequestFactory
+from django.conf import settings
+from model_mommy import mommy
 
 
 class TestCaseMixin(object):
     route = None
     viewclass = None
+    is_viewset = False
 
-    def __get_method(self, method):
-        return {
-            'list': ({'get': 'list'}, APIRequestFactory().get(self.route)),
-            'retrieve': ({'get': 'retrieve'}, APIRequestFactory().get(self.route)),
-            'update': ({'put': 'update'}, APIRequestFactory().put(self.route)),
-            'partial_update': ({'patch': 'partial_update'}, APIRequestFactory().patch(self.route)),
-            'destroy': ({'delete': 'destroy'}, APIRequestFactory().delete(self.route)),
-        }.get(method, ({'get': 'list'}, APIRequestFactory().get(self.route)))
+    def get_request(self, method,
+                    requestuser=None, **kwargs):
+        request = {
+            'get': APIRequestFactory().get(self.route),
+            'delete': APIRequestFactory().delete(self.route),
+        }[method]
+        if requestuser:
+            request.user = requestuser
+        return request, kwargs
 
-    def __mock_request(self, method, **kwargs):
-        method, request = self.__get_method(method)
-        view = self.viewclass.as_view(method)
-        return view(request, **kwargs)
-
-    def mock_get_request(self, method='list', **kwargs):
-        return self.__mock_request(method, **kwargs)
+    def create_admin_user(self):
+        return mommy.make(settings.AUTH_USER_MODEL, is_superuser=True, is_active=True)
 
     def mock_delete_request(self, **kwargs):
-        return self.__mock_request('destroy', **kwargs)
+        request, new_kwargs = self.get_request('delete', **kwargs)
+        if self.is_viewset:
+            view = self.viewclass.as_view({'delete': 'delete'})
+        else:
+            view = self.viewclass.as_view()
+        response = view(request, **new_kwargs)
+        return response
 
-    def mock_put_request(self, **kwargs):
-        return self.__mock_request('update', **kwargs)
+    def mock_get_request(self, **kwargs):
+        request, new_kwargs = self.get_request('get', **kwargs)
+        if self.is_viewset:
+            view = self.viewclass.as_view({'get': 'get'})
+        else:
+            view = self.viewclass.as_view()
+        response = view(request, **new_kwargs)
+        return response
