@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django_cradmin import cradmin_testhelpers
