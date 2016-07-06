@@ -3,7 +3,14 @@ from django.db import models
 
 
 class Channel(models.Model):
+    """
+    A channel
+    """
+
+    #: name of channel
     name = models.CharField(max_length=30, unique=True, blank=False)
+
+    #: channel description
     description = models.TextField(blank=True, default='')
 
     def __str__(self):
@@ -23,10 +30,23 @@ class Channel(models.Model):
 
 
 class Post(models.Model):
+    """
+    This is a post
+    """
+
+    #: The channel this post belongs to
     channel = models.ForeignKey(Channel, null=False)
+
+    #: Post title
     title = models.CharField(max_length=30)
+
+    #: Post text
     text = models.TextField(blank=False)
+
+    #: Amount of votes
     votes = models.IntegerField(null=False, default=0)
+
+    #: The date this post was published on
     publish_date = models.DateTimeField(default=timezone.now, null=False)
 
     class Meta:
@@ -49,8 +69,17 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """
+    This is a comment
+    """
+
+    #: The post this comment belongs to
     post = models.ForeignKey(Post, null=False)
+
+    #: comment text
     text = models.TextField(blank=False)
+
+    #: The date this comment was published on
     publish_date = models.DateTimeField(default=timezone.now, null=False)
 
     def __str__(self):
