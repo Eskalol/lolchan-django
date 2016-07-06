@@ -11,9 +11,9 @@ urlpatterns = patterns(
     url(r'^channel/(?P<order>.+)/list-order-by$', views.ChannelViewListOrder.as_view(), name='list-order'),
     url(r'^channel/(?P<pk>[0-9]+)/$',
         views.ChannelViewDetail.as_view(
-            {'get': 'get',
-             'put': 'put',
-             'delete': 'delete'}
+            {'get': 'retrieve',
+             'put': 'update',
+             'delete': 'destroy'}
         ),
         name='detail'),
 )

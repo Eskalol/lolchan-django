@@ -134,4 +134,5 @@ SWAGGER_SETTINGS = {
 }
 REST_FRAMEWORK = {
     'VIEW_DESCRIPTION_FUNCTION': 'rest_framework_swagger.views.get_restructuredtext',
+
 }
