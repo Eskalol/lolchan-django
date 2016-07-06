@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'ievv_opensource.ievvtasks_common',
     'django_cradmin',
     'lolchan.lolchan_core.apps.LolChanCoreConfig',
+    'lolchan.lolchan_post',
     'lolchan.lolchan_lobby',
     'lolchan.lolchan_channel',
     'lolchan.lolchan_api',

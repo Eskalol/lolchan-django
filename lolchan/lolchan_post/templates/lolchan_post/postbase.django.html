@@ -1,0 +1,16 @@
+{% extends 'django_cradmin/viewhelpers/create.django.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load cradmin_icon_tags %}
+{% load cradmin_tags %}
+
+
+{% block content %}
+    <div class="panel panel-defaul">
+        {{ post.title }}
+        {{ post.text }}
+
+    </div>
+
+    {% cradmin_render_renderable comments %}
+{% endblock %}

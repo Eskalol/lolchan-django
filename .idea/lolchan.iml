@@ -24,6 +24,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/lolchan/lolchan_channel/templates" />
+        <option value="$MODULE_DIR$/lolchan/lolchan_post/templates" />
       </list>
     </option>
   </component>
