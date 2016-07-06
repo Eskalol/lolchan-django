@@ -1,14 +1,12 @@
 from django_cradmin.viewhelpers import listbuilder
 from django_cradmin import crapp
-from django_cradmin.viewhelpers import listbuilderview
 from django_cradmin.viewhelpers import create
-from lolchan.lolchan_core.models import Channel, Post, Comment
+from lolchan.lolchan_core.models import Post, Comment
 from django import forms
 from crispy_forms import layout
 from django_cradmin.acemarkdown.widgets import AceMarkdownWidget
 from django_cradmin.crispylayouts import DefaultSubmit
 from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
 
 
 class CommentItemValue(listbuilder.itemvalue.base.ItemValueRenderer):
@@ -38,8 +36,6 @@ class PostItemValue(listbuilder.itemvalue.FocusBox):
 
     def get_extra_css_classes_list(self):
         css_classes_list = super(PostItemValue, self).get_extra_css_classes_list()
-        # css_classes_list.append('panel')
-        # css_classes_list.append('panel-default')
         return css_classes_list
 
     def __get_comment_queryset(self):
@@ -85,7 +81,6 @@ class PostForm(forms.ModelForm):
 
 class ChannelView(create.CreateView):
     model = Post
-    #submit_use_label = 'Post'
     template_name = 'lolchan_channel/channel.django.html'
 
     def get_pagetitle(self):
@@ -146,8 +141,6 @@ class ChannelView(create.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ChannelView, self).get_context_data(**kwargs)
-        #post_list = PostListBuilder(self.request.cradmin_role)
-        #post_list.build()
         context['post_list'] = listbuilder.base.List.from_value_iterable(
             value_iterable=self.__get_post_queryset(),
             frame_renderer_class=PostItemFrame,

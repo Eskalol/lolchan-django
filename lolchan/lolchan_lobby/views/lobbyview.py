@@ -33,7 +33,6 @@ class ChannelItemValue(listbuilder.itemvalue.TitleDescription):
 
 
 class DefaultChannelOrder(listfilter.django.single.select.AbstractOrderBy):
-    pass
     def get_ordering_options(self):
         return [
             ('', {

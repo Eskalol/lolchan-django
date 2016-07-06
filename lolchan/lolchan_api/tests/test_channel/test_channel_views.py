@@ -97,6 +97,10 @@ class TestChannelViewList(test_api_mixins.TestCaseMixin, test.TestCase):
         )
         self.assertEqual(400, response.status_code)
 
+    def test_post_no_data(self):
+        response = self.mock_post_request(requestuser=self.create_admin_user())
+        self.assertEqual(400, response.status_code)
+
 
 class TestChannelViewListOrder(test_api_mixins.TestCaseMixin, test.TestCase):
     viewclass = ChannelViewListOrder

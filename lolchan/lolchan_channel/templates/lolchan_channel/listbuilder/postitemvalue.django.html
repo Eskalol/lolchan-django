@@ -6,13 +6,13 @@
 
 {% block content %}
         <div class="lolchan-channel-post panel panel-default">
-            <div class="lolchan-channel-post-title panel-heading"><strong>{{ me.post.title }}</strong> - {{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
+            <div class="panel-heading"><div class="lolchan-channel-post-title"><h2>{{ me.post.title }}</h2></div> - {{ me.post.publish_date|date:'d/m/Y H:i' }}</div>
 
-            <div class="lolchan-channel-post-description panel-body">
-                {{ me.post.text }}
+            <div class="panel-body">
+                <div class="lolchan-channel-post-description">{{ me.post.text }}</div>
                 <div class="row">
-                    <div class="col-md-6 lolchan-channel-post-votes">
-                        {{ me.post.votes }}
+                    <div class="col-md-6">
+                        <div class="lolchan-channel-post-votes">{{ me.post.votes }}</div>
                         <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
                         <button class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></button>
                     </div>
