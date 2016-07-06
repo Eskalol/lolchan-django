@@ -17,5 +17,6 @@ default_urls = [
     url('^lobby/', include('lolchan.lolchan_lobby.urls')),
     url('^channel/', include('lolchan.lolchan_channel.urls')),
     url('^api/', include('lolchan.lolchan_api.urls')),
+    url(r'^docs/', include('rest_framework_swagger.urls')),
     #url(r'^admin/', include(CrAdminInstance.urls())),
 ]

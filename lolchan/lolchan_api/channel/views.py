@@ -15,11 +15,29 @@ class ChannelViewList(APIView):
     permission_classes = (permission.IsAuthenticatedOrReadOnly, )
 
     def get(self, request, *args, **kwargs):
+        """
+        List all channels
+
+        """
         channels = Channel.objects.all().order_by('name')
         serializer = self.serializer_class(channels, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        """
+        Create a new channel
+
+        ---
+        parameters:
+            - name: name
+              type: string
+              required: true
+              description: channel name
+            - name: description
+              type: string
+              required: false
+              description: channel description
+        """
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -29,6 +47,17 @@ class ChannelViewList(APIView):
 
 class ChannelViewListOrder(APIView):
     def get(self, request, order, *args, **kwargs):
+        """
+            Get list with order
+
+            ---
+            parameters:
+                - name: order
+                  type: string
+                  required: true
+                  paramType: path
+                  description: order by
+            """
         field = order
         if order[0] == '-':
             field = order[1:]
@@ -52,11 +81,41 @@ class ChannelViewDetail(ViewSet):
             raise Http404
 
     def retrieve(self, request, pk, *args, **kwargs):
+        """
+            Retrieve channel
+
+            ---
+            parameters:
+                - name: pk
+                  type: Int
+                  required: true
+                  paramType: path
+                  description: primary key
+            """
         channel = self.get_object(pk)
         serializer = self.serializer_class(channel)
         return Response(serializer.data)
 
     def update(self, request, pk, *args, **kwargs):
+        """
+            Update channel
+
+            ---
+            parameters:
+                - name: pk
+                  type: Int
+                  required: true
+                  paramType: path
+                  description: primary key
+                - name: name
+                  type: string
+                  required: false
+                  description: channel name
+                - name: description
+                  type: string
+                  required: false
+                  description: channel description
+            """
         channel = self.get_object(pk)
         serializer = self.serializer_class(channel, data=request.data, partial=True)
         if serializer.is_valid():
@@ -65,6 +124,17 @@ class ChannelViewDetail(ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk, *args, **kwargs):
+        """
+            Destroy channel
+
+            ---
+            parameters:
+                - name: pk
+                  type: Int
+                  required: true
+                  paramType: path
+                  description: primary key
+            """
         channel = self.get_object(pk)
         channel.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
