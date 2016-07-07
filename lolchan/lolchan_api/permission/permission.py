@@ -19,4 +19,4 @@ class PostViewPermission(IsAuthenticatedOrReadOnly):
 
 
 class PostViewUpdateDestroy(IsAuthenticatedOrReadOnly):
-    SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS', 'PUT']
+    SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS', 'PATCH']

@@ -125,6 +125,20 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
             })
         self.assertEqual(400, response.status_code)
 
+    def test_post_invalid_number_of_votes(self):
+        channel = mommy.make('lolchan_core.Channel')
+        response = self.mock_post_request(
+            data={
+                'title': 'Doge so cool',
+                'text': 'Doge is cool, Cate is not',
+                'channel': channel.id,
+                'votes': 10000
+            })
+        self.assertEqual(201, response.status_code)
+        self.assertEqual(0, response.data['votes'])
+        votes_db = Post.objects.filter(title='Doge so cool').values('votes')[0]['votes']
+        self.assertEqual(response.data['votes'], votes_db)
+
 
 class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
     viewclass = PostUpdateDestroyView
@@ -169,13 +183,12 @@ class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
 
     def test_update_voteup_only_votes_field_changed(self):
         testpost = mommy.make('lolchan_core.Post')
-        response = self.mock_put_request(
+        response = self.mock_patch_request(
             queryparams='?id={}'.format(testpost.id),
             data={
                 'text': 'hei',
                 'title': 'cool',
                 'votes': 1000,
-                'channel': testpost.channel.id,
             })
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -191,13 +204,11 @@ class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
 
     def test_update_votdown_only_votes_field_changed(self):
         testpost = mommy.make('lolchan_core.Post')
-        response = self.mock_put_request(
+        response = self.mock_patch_request(
             queryparams='?id={}'.format(testpost.id),
             data={
-                'text': 'hei',
                 'title': 'cool',
                 'votes': -1000,
-                'channel': testpost.channel.id,
             })
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -213,13 +224,10 @@ class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
 
     def test_update_vote_zero_only_votes_field_changed(self):
         testpost = mommy.make('lolchan_core.Post')
-        response = self.mock_put_request(
+        response = self.mock_patch_request(
             queryparams='?id={}'.format(testpost.id),
             data={
-                'text': 'hei',
-                'title': 'cool',
                 'votes': 0,
-                'channel': testpost.channel.id,
             })
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -232,16 +240,3 @@ class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
             },
             response.data
         )
-
-    def test_update_invalid_field(self):
-        testpost = mommy.make('lolchan_core.Post')
-        response = self.mock_put_request(
-            queryparams='?id={}'.format(testpost.id),
-            data={
-                'text': 'hei',
-                'invalid': 'cool',
-                'votes': 1000,
-                'channel': testpost.channel.id,
-            })
-        self.assertEqual(400, response.status_code)
-

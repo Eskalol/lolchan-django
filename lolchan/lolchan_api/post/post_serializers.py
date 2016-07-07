@@ -29,3 +29,12 @@ class PostModelSerializer(serializers.ModelSerializer):
             self.instance.vote = self.instance.votes
         instance.save()
         return instance
+
+    def create(self, validated_data):
+        """
+            When creating a post we are not allowed to give yourself 1000 votes,
+            therefore votes is set to 0
+
+        """
+        validated_data['votes'] = 0
+        return super(PostModelSerializer, self).create(validated_data)

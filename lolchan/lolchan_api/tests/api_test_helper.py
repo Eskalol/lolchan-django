@@ -24,6 +24,9 @@ class TestCaseMixin(object):
             'post': APIRequestFactory().post('{}{}'.format(self.route, queryparams),
                                              data=data,
                                              format=format),
+            'patch': APIRequestFactory().patch('{}{}'.format(self.route, queryparams),
+                                               data=data,
+                                               format=format),
         }[method]
         if requestuser:
             request.user = requestuser
@@ -60,6 +63,15 @@ class TestCaseMixin(object):
         response = view(request, **viewkwargs)
         return response
 
+    def mock_patch_request(self, method='patch', **kwargs):
+        request, viewkwargs = self.get_request('patch', **kwargs)
+        if self.is_viewset:
+            view = self.viewclass.as_view({'patch': method})
+        else:
+            view = self.viewclass.as_view()
+        response = view(request, **viewkwargs)
+        return response
+
     def mock_post_request(self, method='post', **kwargs):
         request, viewkwargs = self.get_request('post', **kwargs)
         if self.is_viewset:
@@ -68,3 +80,4 @@ class TestCaseMixin(object):
             view = self.viewclass.as_view()
         response = view(request, **viewkwargs)
         return response
+
