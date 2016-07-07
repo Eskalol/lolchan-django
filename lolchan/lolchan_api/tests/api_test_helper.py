@@ -11,15 +11,17 @@ class TestCaseMixin(object):
 
     def get_request(self, method,
                     requestuser=None,
+                    format='json',
                     data={},
+                    queryparams='',
                     **kwargs):
         request = {
-            'get': APIRequestFactory().get(self.route),
-            'delete': APIRequestFactory().delete(self.route),
-            'put': APIRequestFactory().put(self.route, data),
-            'post': APIRequestFactory().post(self.route,
+            'get': APIRequestFactory().get('{}{}'.format(self.route, queryparams), format=format),
+            'delete': APIRequestFactory().delete('{}{}'.format(self.route, queryparams)),
+            'put': APIRequestFactory().put('{}{}'.format(self.route, queryparams), data),
+            'post': APIRequestFactory().post('{}{}'.format(self.route, queryparams),
                                              data=data,
-                                             format='json'),
+                                             format=format),
         }[method]
         if requestuser:
             request.user = requestuser

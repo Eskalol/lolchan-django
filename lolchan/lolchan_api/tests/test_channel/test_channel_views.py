@@ -3,11 +3,11 @@ from model_mommy import mommy
 
 
 from lolchan.lolchan_api.channel.views import ChannelViewList, ChannelViewDetail, ChannelViewListOrder
-from lolchan.lolchan_api.tests import test_api_mixins
+from lolchan.lolchan_api.tests import api_test_helper
 from lolchan.lolchan_core.models import Channel
 
 
-class TestChannelViewList(test_api_mixins.TestCaseMixin, test.TestCase):
+class TestChannelViewList(api_test_helper.TestCaseMixin, test.TestCase):
     viewclass = ChannelViewList
     route = '/channel/'
 
@@ -102,7 +102,7 @@ class TestChannelViewList(test_api_mixins.TestCaseMixin, test.TestCase):
         self.assertEqual(400, response.status_code)
 
 
-class TestChannelViewListOrder(test_api_mixins.TestCaseMixin, test.TestCase):
+class TestChannelViewListOrder(api_test_helper.TestCaseMixin, test.TestCase):
     viewclass = ChannelViewListOrder
     route = r'^channel/(?P<order>.+)/list-order-by$'
 
@@ -138,7 +138,7 @@ class TestChannelViewListOrder(test_api_mixins.TestCaseMixin, test.TestCase):
         self.assertEqual(400, response.status_code)
 
 
-class TestChannelViewDetail(test_api_mixins.TestCaseMixin, test.TestCase):
+class TestChannelViewDetail(api_test_helper.TestCaseMixin, test.TestCase):
     viewclass = ChannelViewDetail
     route = r'^channel/(?P<pk>[0-9]+)/$'
     is_viewset = True

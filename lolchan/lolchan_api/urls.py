@@ -16,7 +16,8 @@ urlpatterns = patterns(
              'delete': 'destroy'}
         ),
         name='detail'),
-    url(r'^post/(?P<pk>[0-9]+)/vote$', post_views.PostViewVote.as_view(), name='post-vote'),
+    url(r'^post/$', post_views.PostListFilterView.as_view(), name='post'),
+    url(r'^post/update-delete/$', post_views.PostUpdateDestroyView.as_view(), name='post-update')
 )
 
 urlpatterns += router.urls
