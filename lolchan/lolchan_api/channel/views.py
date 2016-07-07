@@ -58,11 +58,8 @@ class ChannelViewListOrder(APIView):
                   paramType: path
                   description: order by
             """
-        field = order
-        if order[0] == '-':
-            field = order[1:]
         try:
-            Channel._meta.get_field_by_name(field)
+            Channel._meta.get_field_by_name(order[1:] if order[0] == '-' else order)
         except FieldDoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={'Exception': '{}: field does not exist'.format(order)})
         channels = Channel.objects.all().order_by(order)

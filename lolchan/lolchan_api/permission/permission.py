@@ -20,3 +20,6 @@ class PostViewPermission(IsAuthenticatedOrReadOnly):
 
 class PostViewUpdateDestroy(IsAuthenticatedOrReadOnly):
     SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS', 'PATCH']
+
+class CommentViewPermission(IsAuthenticatedOrReadOnly):
+    SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS', 'POST']

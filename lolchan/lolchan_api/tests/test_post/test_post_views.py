@@ -10,10 +10,7 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
     route = '/post/'
 
     def test_get_sanity(self):
-        testpost = mommy.make('lolchan_core.Post',
-                              channel=mommy.make('lolchan_core.Channel'),
-                              text='hei',
-                              title='lol')
+        testpost = mommy.make('lolchan_core.Post')
         response = self.mock_get_request()
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -28,9 +25,7 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
         )
 
     def test_get_on_id(self):
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   id=2)
+        mommy.make('lolchan_core.Post', id=2)
         testpost = mommy.make('lolchan_core.Post',
                               channel=mommy.make('lolchan_core.Channel'),
                               id=1)
@@ -46,37 +41,30 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
             response.data)
 
     def test_get_id_404(self):
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   id=1)
+        mommy.make('lolchan_core.Post', id=1)
         response = self.mock_get_request(queryparams='?id=200')
         self.assertEqual(404, response.status_code)
 
+    def test_get_text_404(self):
+        mommy.make('lolchan_core.Post',
+                   channel=mommy.make('lolchan_core.Channel', name='lol'),
+                   title='lol', text='heia')
+        response = self.mock_get_request(queryparams='?text=doge')
+        self.assertEqual(404, response.status_code)
+
     def test_get_queryparam_text_title(self):
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   title='doge')
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   title='cool doge')
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   title='imba')
+        mommy.make('lolchan_core.Post', title='doge')
+        mommy.make('lolchan_core.Post', title='cool doge')
+        mommy.make('lolchan_core.Post', title='imba')
         response = self.mock_get_request(queryparams='?text=doge')
         self.assertEqual(200, response.status_code)
         titles_response = [postdict['title'] for postdict in response.data]
         self.assertListEqual(sorted(titles_response), ['cool doge', 'doge'])
 
     def test_get_queryparam_text_text(self):
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   text='doge')
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   text='cool doge')
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel'),
-                   text='imba')
+        mommy.make('lolchan_core.Post', text='doge')
+        mommy.make('lolchan_core.Post', text='cool doge')
+        mommy.make('lolchan_core.Post', text='imba')
         response = self.mock_get_request(queryparams='?text=doge')
         self.assertEqual(200, response.status_code)
         text_response = [postdict['text'] for postdict in response.data]
@@ -84,23 +72,14 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
 
     def test_get_queryparam_text_channel_name(self):
         testchannel = mommy.make('lolchan_core.Channel', name='doge')
-        mommy.make('lolchan_core.Post',
-                   channel=testchannel)
-        mommy.make('lolchan_core.Post',
-                   channel=testchannel)
+        mommy.make('lolchan_core.Post', channel=testchannel)
+        mommy.make('lolchan_core.Post', channel=testchannel)
         mommy.make('lolchan_core.Post',
                    channel=mommy.make('lolchan_core.Channel', name='lol'),
                    title='lol', text='heia')
         response = self.mock_get_request(queryparams='?text=doge')
         self.assertEqual(200, response.status_code)
         self.assertEqual(2, len(response.data))
-
-    def test_get_queryparm_404(self):
-        mommy.make('lolchan_core.Post',
-                   channel=mommy.make('lolchan_core.Channel', name='lol'),
-                   title='lol', text='heia')
-        response = self.mock_get_request(queryparams='?text=doge')
-        self.assertEqual(404, response.status_code)
 
     def test_post(self):
         channel = mommy.make('lolchan_core.Channel')
@@ -145,10 +124,7 @@ class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
     route = '/post/update-delete/'
 
     def test_get_sanity(self):
-        testpost = mommy.make('lolchan_core.Post',
-                              channel=mommy.make('lolchan_core.Channel'),
-                              text='hei',
-                              title='lol')
+        testpost = mommy.make('lolchan_core.Post', text='hei', title='lol')
         response = self.mock_get_request(queryparams='?id={}'.format(testpost.id))
         self.assertEqual(200, response.status_code)
         self.assertEqual(

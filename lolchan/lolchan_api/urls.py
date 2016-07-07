@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from lolchan.lolchan_api.channel import views as channel_views
 from lolchan.lolchan_api.post import views as post_views
+from lolchan.lolchan_api.comment import views as comment_views
 router = routers.DefaultRouter()
 
 urlpatterns = patterns(
@@ -17,7 +18,9 @@ urlpatterns = patterns(
         ),
         name='detail'),
     url(r'^post/$', post_views.PostListFilterView.as_view(), name='post'),
-    url(r'^post/update-delete/$', post_views.PostUpdateDestroyView.as_view(), name='post-update')
+    url(r'^post/update-delete/$', post_views.PostUpdateDestroyView.as_view(), name='post-update/destroy'),
+    url(r'^comment/list/$', comment_views.CommentViewList.as_view(), name='comment-list'),
+    url(r'^comment/$', comment_views.CommentView.as_view(), name='comment'),
 )
 
 urlpatterns += router.urls

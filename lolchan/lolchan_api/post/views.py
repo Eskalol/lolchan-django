@@ -1,10 +1,6 @@
-from rest_framework.permissions import AllowAny
 from django.http import Http404
 from django.db.models import Q
-from rest_framework.views import APIView
 from rest_framework import generics
-from rest_framework import status
-from rest_framework.response import Response
 
 from lolchan.lolchan_api.post import post_serializers
 from lolchan.lolchan_core.models import Post
@@ -18,18 +14,17 @@ class PostListFilterView(generics.mixins.ListModelMixin,
     permission_classes = (permission.PostViewPermission, )
 
     def get_queryset(self):
+        queryset_list = Post.objects.all()
         pk = self.request.query_params.get('id', None)
         if pk:
-            queryset_list = Post.objects.filter(pk=pk)
-        else:
-            queryset_list = Post.objects.all()
-            query_text = self.request.query_params.get('text', None)
-            if query_text:
-                queryset_list = queryset_list.filter(
-                    Q(title__icontains=query_text) |
-                    Q(text__icontains=query_text) |
-                    Q(channel__name__icontains=query_text)
-                ).distinct()
+            queryset_list = queryset_list.filter(pk=pk)
+        query_text = self.request.query_params.get('text', None)
+        if query_text:
+            queryset_list = queryset_list.filter(
+                Q(title__icontains=query_text) |
+                Q(text__icontains=query_text) |
+                Q(channel__name__icontains=query_text)
+            ).distinct()
         if not queryset_list:
             raise Http404
         return queryset_list
