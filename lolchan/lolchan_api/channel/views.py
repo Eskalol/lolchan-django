@@ -48,7 +48,7 @@ class ChannelViewList(APIView):
 class ChannelViewListOrder(APIView):
     def get(self, request, order, *args, **kwargs):
         """
-            Get list with order
+            Gets a list of channels by chosen order
 
             ---
             parameters:
@@ -82,7 +82,7 @@ class ChannelViewDetail(ViewSet):
 
     def retrieve(self, request, pk, *args, **kwargs):
         """
-            Retrieve channel
+            Retrieve channel by primary key
 
             ---
             parameters:
