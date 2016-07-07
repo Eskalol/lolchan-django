@@ -42,9 +42,9 @@ class PostListFilterView(generics.mixins.ListModelMixin,
 
 
 class PostUpdateDestroyView(generics.mixins.UpdateModelMixin,
-                     generics.mixins.RetrieveModelMixin,
-                     generics.mixins.DestroyModelMixin,
-                     generics.GenericAPIView):
+                            generics.mixins.RetrieveModelMixin,
+                            generics.mixins.DestroyModelMixin,
+                            generics.GenericAPIView):
 
     serializer_class = post_serializers.PostModelSerializer
     permission_classes = (permission.PostViewUpdateDestroy, )

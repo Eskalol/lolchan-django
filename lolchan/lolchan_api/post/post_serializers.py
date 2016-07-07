@@ -13,7 +13,19 @@ class PostModelSerializer(serializers.ModelSerializer):
         return instance.publish_date.isoformat()
 
     def update(self, instance, validated_data):
+        """
+            Since anonymous users should be able to vote a post, they should only
+            be allowed to change the "votes" field, and to prevent users from
+            voting a post by 1000 up or down in one request we'll only change "votes"
+            by 1
+        """
         serializers.raise_errors_on_nested_writes('update', self, validated_data)
-
-        self.instance.votes = validated_data.get('votes', self.instance.votes)
+        votes = validated_data.get('votes', self.instance.votes)
+        if votes > 0:
+            self.instance.votes += 1
+        elif votes < 0:
+            self.instance.votes -= 1
+        else:
+            self.instance.vote = self.instance.votes
         instance.save()
+        return instance

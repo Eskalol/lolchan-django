@@ -21,7 +21,8 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
                 'title': testpost.title,
                 'text': testpost.text,
                 'votes': testpost.votes,
-                'publish_date': testpost.publish_date.isoformat()
+                'publish_date': testpost.publish_date.isoformat(),
+                'channel': testpost.channel.id
             }],
             response.data
         )
@@ -39,7 +40,8 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
                 'title': testpost.title,
                 'text': testpost.text,
                 'votes': testpost.votes,
-                'publish_date': testpost.publish_date.isoformat()
+                'publish_date': testpost.publish_date.isoformat(),
+                'channel': testpost.channel.id
             }],
             response.data)
 
@@ -125,4 +127,121 @@ class TestPostListFilterVIew(api_test_helper.TestCaseMixin, test.TestCase):
 
 
 class TestPostUpdateDestroyView(api_test_helper.TestCaseMixin, test.TestCase):
-    pass
+    viewclass = PostUpdateDestroyView
+    route = '/post/update-delete/'
+
+    def test_get_sanity(self):
+        testpost = mommy.make('lolchan_core.Post',
+                              channel=mommy.make('lolchan_core.Channel'),
+                              text='hei',
+                              title='lol')
+        response = self.mock_get_request(queryparams='?id={}'.format(testpost.id))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            {
+                'title': testpost.title,
+                'text': testpost.text,
+                'votes': testpost.votes,
+                'publish_date': testpost.publish_date.isoformat(),
+                'channel': testpost.channel.id
+            },
+            response.data
+        )
+
+    def test_404(self):
+        response = self.mock_get_request(queryparams='?id=1337')
+        self.assertEqual(404, response.status_code)
+
+    def test_permission_anonymous_destroy(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_delete_request(queryparams='?id={}'.format(testpost.id))
+        self.assertEqual(403, response.status_code)
+
+    def test_permission_admin_destroy(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_delete_request(queryparams='?id={}'.format(testpost.id),
+                                            requestuser=self.create_admin_user())
+        self.assertEqual(204, response.status_code)
+        response = self.mock_get_request(queryparams='?id={}'.format(testpost.id))
+        self.assertEqual(404, response.status_code)
+        with self.assertRaises(Post.DoesNotExist):
+            Post.objects.get(pk=testpost.id)
+
+    def test_update_voteup_only_votes_field_changed(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_put_request(
+            queryparams='?id={}'.format(testpost.id),
+            data={
+                'text': 'hei',
+                'title': 'cool',
+                'votes': 1000,
+                'channel': testpost.channel.id,
+            })
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            {
+                'text': testpost.text,
+                'title': testpost.title,
+                'votes': testpost.votes + 1,
+                'channel': testpost.channel.id,
+                'publish_date': testpost.publish_date.isoformat()
+            },
+            response.data
+        )
+
+    def test_update_votdown_only_votes_field_changed(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_put_request(
+            queryparams='?id={}'.format(testpost.id),
+            data={
+                'text': 'hei',
+                'title': 'cool',
+                'votes': -1000,
+                'channel': testpost.channel.id,
+            })
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            {
+                'text': testpost.text,
+                'title': testpost.title,
+                'votes': testpost.votes - 1,
+                'channel': testpost.channel.id,
+                'publish_date': testpost.publish_date.isoformat()
+            },
+            response.data
+        )
+
+    def test_update_vote_zero_only_votes_field_changed(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_put_request(
+            queryparams='?id={}'.format(testpost.id),
+            data={
+                'text': 'hei',
+                'title': 'cool',
+                'votes': 0,
+                'channel': testpost.channel.id,
+            })
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(
+            {
+                'text': testpost.text,
+                'title': testpost.title,
+                'votes': testpost.votes,
+                'channel': testpost.channel.id,
+                'publish_date': testpost.publish_date.isoformat()
+            },
+            response.data
+        )
+
+    def test_update_invalid_field(self):
+        testpost = mommy.make('lolchan_core.Post')
+        response = self.mock_put_request(
+            queryparams='?id={}'.format(testpost.id),
+            data={
+                'text': 'hei',
+                'invalid': 'cool',
+                'votes': 1000,
+                'channel': testpost.channel.id,
+            })
+        self.assertEqual(400, response.status_code)
+

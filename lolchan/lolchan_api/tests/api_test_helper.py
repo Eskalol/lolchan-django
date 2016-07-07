@@ -18,7 +18,9 @@ class TestCaseMixin(object):
         request = {
             'get': APIRequestFactory().get('{}{}'.format(self.route, queryparams), format=format),
             'delete': APIRequestFactory().delete('{}{}'.format(self.route, queryparams)),
-            'put': APIRequestFactory().put('{}{}'.format(self.route, queryparams), data),
+            'put': APIRequestFactory().put('{}{}'.format(self.route, queryparams),
+                                           data=data,
+                                           format=format),
             'post': APIRequestFactory().post('{}{}'.format(self.route, queryparams),
                                              data=data,
                                              format=format),
